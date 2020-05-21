@@ -16136,14 +16136,23 @@ void ConsoleReporter::testGroupEnded(TestGroupStats const& _testGroupStats) {
     StreamingReporterBase::testGroupEnded(_testGroupStats);
 }
 void ConsoleReporter::testRunEnded(TestRunStats const& _testRunStats) {
-	int rank_id = -1;
-    MPI_Comm_rank(MPI_COMM_WORLD,&rank_id);
-    if(rank_id != 0 )
-        return;
-    printTotalsDivider(_testRunStats.totals);
-    printTotals(_testRunStats.totals);
-    stream << std::endl;
-    StreamingReporterBase::testRunEnded(_testRunStats);
+	int rank, size;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
+
+    for(int i = 0; i<size; ++i){
+        MPI_Barrier(MPI_COMM_WORLD);
+        if(i == rank){
+            stream << std::endl;
+            stream << Colour(Colour::None) << "RANK " << rank << std::endl;
+            printTotalsDivider(_testRunStats.totals);
+            printTotals(_testRunStats.totals);
+            stream << std::endl;
+            StreamingReporterBase::testRunEnded(_testRunStats);
+        }
+        MPI_Barrier(MPI_COMM_WORLD);
+    }
+
 }
 void ConsoleReporter::testRunStarting(TestRunInfo const& _testInfo) {
     StreamingReporterBase::testRunStarting(_testInfo);

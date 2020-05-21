@@ -8,19 +8,26 @@ FIND_PACKAGE(deal.II 9.0.0
 IF(NOT ${deal.II_FOUND})
     MESSAGE(FATAL_ERROR
             "*** Could not locate deal.II. ***
-        You may want to either pass a flag -DDEAL_II_DIR=/path/to/deal.II to cmake
-        or set an environment variable \"DEAL_II_DIR\" that contains this path."
+			You may want to either pass a flag -DDEAL_II_DIR=/path/to/deal.II to cmake
+			or set an environment variable \"DEAL_II_DIR\" that contains this path."
             )
 ENDIF(NOT ${deal.II_FOUND})
 
-IF( NOT DEAL_II_WITH_MPI OR NOT DEAL_II_WITH_P4EST OR NOT DEAL_II_WITH_TRILINOS )
+IF( NOT DEAL_II_WITH_MPI)
     MESSAGE(FATAL_ERROR
             "Error! The deal.II library found at ${DEAL_II_PATH} was not configured with
-            DEAL_II_WITH_MPI = ON
-            DEAL_II_WITH_P4EST = ON
-            DEAL_II_WITH_TRILINOS = ON
-        One or all of these are OFF in your installation but are required for this tutorial step."
-            )
+            DEAL_II_WITH_MPI = ON"
+			)
+ELSEIF(NOT DEAL_II_WITH_P4EST)
+	MESSAGE(FATAL_ERROR
+			"Error! The deal.II library found at ${DEAL_II_PATH} was not configured with
+			DEAL_II_WITH_P4EST = ON"
+			)
+ELSEIF(NOT DEAL_II_WITH_TRILINOS)
+	MESSAGE(FATAL_ERROR
+			"Error! The deal.II library found at ${DEAL_II_PATH} was not configured with
+            DEAL_II_WITH_TRILINOS = ON"
+			)
 ENDIF()
 
 ADD_CUSTOM_TARGET(debug
@@ -38,22 +45,11 @@ ADD_CUSTOM_TARGET(release
 DEAL_II_INITIALIZE_CACHED_VARIABLES()
 
 SET(CMAKE_CXX_STANDARD 17)
-
-SET(TARGET "NSE")
-
 SET(CLEAN_UP_FILES *.vtu *.pvtu *.visit)
 
-PROJECT(${TARGET} 
-		LANGUAGES C CXX
-	   )
+SET(TARGET "NSE")
+PROJECT(${TARGET} C CXX)
 
 ADD_SUBDIRECTORY(${PROJECT_SOURCE_DIR}/src)
-
-###########
-# Testing
-###########
-
-ENABLE_TESTING()
-
 ADD_SUBDIRECTORY(${PROJECT_SOURCE_DIR}/test)
 
