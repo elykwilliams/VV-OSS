@@ -3,3 +3,4 @@ ENABLE_TESTING()
 
 ADD_SUBDIRECTORY(unit_tests)
 ADD_SUBDIRECTORY(regression_tests)
+ADD_SUBDIRECTORY(prm)
