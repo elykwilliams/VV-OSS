@@ -1,8 +1,7 @@
 
 SET(TARGET_SRC_FILES
 		${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/Base/settings.cpp
-   )
+        )
 
 SET(TARGET_INC_DIRS 
     ${CMAKE_CURRENT_SOURCE_DIR}/.
