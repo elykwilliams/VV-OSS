@@ -6,6 +6,12 @@ subsection General Settings
 end
 
 
+subsection Mesh Settings
+  set Initial Refinements = 3
+  set Output Mesh         = false
+end
+
+
 subsection Test Case Parameters
 end
 

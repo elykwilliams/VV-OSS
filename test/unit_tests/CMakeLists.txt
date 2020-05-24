@@ -1,6 +1,6 @@
 SET(UNIT_TESTS unit_tests)
 
-SET(PROJECT_SRC_FILES )
+SET(PROJECT_SRC_FILES ../../src/Base/NSESolver.cpp ../../src/Base/NSESolver.h)
 
 SET(UNIT_TEST_SOURCES
         unit_test_driver.cc
