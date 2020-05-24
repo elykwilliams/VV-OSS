@@ -1,7 +1,7 @@
 
 SET(TARGET_SRC_FILES
 		${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
-        )
+		Base/NSESolver.cpp Base/NSESolver.h)
 
 SET(TARGET_INC_DIRS 
     ${CMAKE_CURRENT_SOURCE_DIR}/.
