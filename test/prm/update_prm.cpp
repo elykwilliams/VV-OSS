@@ -11,6 +11,7 @@ int main (int argc, char *argv[]){
 
         try {
             Settings settings(parameter_file);
+            settings.export_settings(parameter_file);
         }
 
         catch (std::exception &exc) {
@@ -18,7 +19,8 @@ int main (int argc, char *argv[]){
             std::cerr << std::endl << std::endl
                       << "----------------------------------------------------"
                       << std::endl;
-            std::cerr << "Exception on processing: " << parameter_file << std::endl << exc.what()
+            std::cerr << "Exception on processing: " << parameter_file << std::endl
+                      << exc.what()
                       << "----------------------------------------------------"
                       << std::endl;
 

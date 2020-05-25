@@ -20,7 +20,6 @@ int main (int argc, char *argv[]){
         if (argc != 2){
             throw EXCNoParam();
         }
-
         Settings settings(parameter_file);
 
         if (settings.get_dim() == 2)
@@ -29,6 +28,9 @@ int main (int argc, char *argv[]){
             NSESolver<2> NSE(settings);
         else
             throw std::runtime_error("Invalid dimension specified in " + parameter_file);
+
+        if (Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
+            settings.export_settings(parameter_file);
 
     }
     catch (EXCNoParam & exc){

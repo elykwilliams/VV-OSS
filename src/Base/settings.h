@@ -5,7 +5,8 @@
 #ifndef NSE_SETTINGS_H
 #define NSE_SETTINGS_H
 #include <deal.II/base/parameter_handler.h>
-#include <deal.II/base/parameter_acceptor.h>
+#include <deal.II/base/mpi.h>
+#include <deal.II/base/conditional_ostream.h>
 
 #include <string>
 #include <fstream>
@@ -15,10 +16,21 @@ using namespace dealii;
 
 struct TestCaseParameters
 {
+    enum class type {round_cylinder, channel_flow, manufactured};
     explicit TestCaseParameters(ParameterHandler& prm) {
         prm.enter_subsection("Test Case Parameters");
+        prm.add_parameter("Test Case Type", name_str, "round_cylinder | channel_flow | manufactured",
+                Patterns::Selection("round_cylinder|channel_flow|manufactured"));
+        prm.add_action("Test Case Type", [&](const string& s){
+           if (s == "round_cylinder") name = type::round_cylinder;
+           else if (s == "channel_flow") name = type::channel_flow;
+           else if (s == "manufactured") name = type::manufactured;
+        });
         prm.leave_subsection();
     }
+
+    string name_str = "manufactured";
+    type name;
 };
 
 
@@ -57,9 +69,6 @@ struct Settings
         MeshSettings(prm)
     {
         prm.parse_input(filename);
-
-        ofstream ofs{filename};
-        prm.print_parameters(ofs, ParameterHandler::OutputStyle::Text);
     }
 
     Settings(const Settings& s):
@@ -73,6 +82,11 @@ struct Settings
         return GeneralSettings.dim;
     }
 
+    void export_settings(const string& filename){
+        ofstream ofs{filename};
+        prm.print_parameters(ofs, ParameterHandler::OutputStyle::Text);
+    }
+
 private:
     ParameterHandler prm;
 public:
@@ -82,8 +96,6 @@ public:
 };
 
 
-#include <deal.II/base/mpi.h>
-#include <deal.II/base/conditional_ostream.h>
 struct MPISettings{
     MPISettings():
         mpi_comm(MPI_COMM_WORLD),

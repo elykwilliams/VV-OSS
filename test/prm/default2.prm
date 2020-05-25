@@ -3,7 +3,7 @@
 subsection General Settings
   set Dimension        = 3
   set Output Directory = 
-end 
+end
 
 
 subsection Mesh Settings
@@ -13,6 +13,8 @@ end
 
 
 subsection Test Case Parameters
+  # round_cylinder | channel_flow | manufactured
+  set Test Case Type = manufactured
 end
 
 

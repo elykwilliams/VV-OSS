@@ -21,5 +21,5 @@ TARGET_INCLUDE_DIRECTORIES(${REGRESSION_TESTS} PRIVATE ${TEST_INCLUDE_DIRS})
 # Setup DealII
 DEAL_II_SETUP_TARGET(${REGRESSION_TESTS})
 
-ADD_TEST(test_default_prm mpirun -n 2 ${REGRESSION_TESTS} ${PRM_DIR}/default.prm)
-ADD_TEST(test_default2_prm mpirun -n 2 ${REGRESSION_TESTS} ${PRM_DIR}/default2.prm)
+ADD_TEST(test_default_prm mpirun ${REGRESSION_TESTS} ${PRM_DIR}/default.prm)
+ADD_TEST(test_default2_prm mpirun ${REGRESSION_TESTS} ${PRM_DIR}/default2.prm)
