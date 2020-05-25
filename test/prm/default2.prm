@@ -1,9 +1,9 @@
 # Listing of Parameters
 # ---------------------
 subsection General Settings
-  set Dimension        = 2 # default: 3
+  set Dimension        = 3
   set Output Directory = 
-end
+end 
 
 
 subsection Mesh Settings
