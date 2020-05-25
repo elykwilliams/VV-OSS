@@ -17,13 +17,17 @@ namespace P4est{
 
 
 template<int dim>
-class NSESolver : Settings, MPISettings{
+class NSESolver : public Settings, private MPISettings{
 public:
     NSESolver() = delete;
     explicit NSESolver(const Settings& s);
 
+
+
 private:
     P4est::Triangulation<dim> triangulation;
+
+    void setup_mesh();
 };
 
 

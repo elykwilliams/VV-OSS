@@ -1,6 +1,6 @@
 SET(UNIT_TESTS unit_tests)
 
-SET(PROJECT_SRC_FILES ../../src/Base/NSESolver.cpp ../../src/Base/NSESolver.h)
+SET(PROJECT_SRC_FILES ../../src/Base/NSESolver.cpp ../../src/Base/NSESolver.h ../../src/Geometry/manufactured.cpp ../../src/Geometry/round_cylinder.cpp ../../src/Geometry/channel_flow.cpp)
 
 SET(UNIT_TEST_SOURCES
         unit_test_driver.cc

@@ -52,6 +52,4 @@ PROJECT(${TARGET} C CXX)
 
 ADD_SUBDIRECTORY(${PROJECT_SOURCE_DIR}/src)
 ADD_SUBDIRECTORY(${PROJECT_SOURCE_DIR}/test)
-ADD_CUSTOM_TARGET(compile_tests
-		COMMAND make regression_tests
-		COMMAND make unit_tests)
+

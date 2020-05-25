@@ -5,7 +5,10 @@ SET(REGRESSION_TEST_SOURCES
         tests.cpp)
 
 SET(PROJECT_SRC_FILES
-        ${CMAKE_SOURCE_DIR}/src/Base/NSESolver.cpp)
+        ${CMAKE_SOURCE_DIR}/src/Base/NSESolver.cpp
+        ${CMAKE_SOURCE_DIR}/src/Geometry/manufactured.cpp
+        ${CMAKE_SOURCE_DIR}/src/Geometry/round_cylinder.cpp
+        ${CMAKE_SOURCE_DIR}/src/Geometry/channel_flow.cpp)
 
 SET(TEST_INCLUDE_DIRS
         ${CMAKE_SOURCE_DIR}/test/

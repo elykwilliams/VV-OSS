@@ -8,29 +8,33 @@
 #include <deal.II/base/mpi.h>
 #include <deal.II/base/conditional_ostream.h>
 
+#include "Base/types.h"
+
 #include <string>
 #include <fstream>
+#include <sys/stat.h>
+
 using std::ofstream, std::string;
 
 using namespace dealii;
 
 struct TestCaseParameters
 {
-    enum class type {round_cylinder, channel_flow, manufactured};
+
     explicit TestCaseParameters(ParameterHandler& prm) {
         prm.enter_subsection("Test Case Parameters");
         prm.add_parameter("Test Case Type", name_str, "round_cylinder | channel_flow | manufactured",
                 Patterns::Selection("round_cylinder|channel_flow|manufactured"));
         prm.add_action("Test Case Type", [&](const string& s){
-           if (s == "round_cylinder") name = type::round_cylinder;
-           else if (s == "channel_flow") name = type::channel_flow;
-           else if (s == "manufactured") name = type::manufactured;
+           if (s == "round_cylinder") name = TestCase::round_cylinder;
+           else if (s == "channel_flow") name = TestCase::channel_flow;
+           else if (s == "manufactured") name = TestCase::manufactured;
         });
         prm.leave_subsection();
     }
 
     string name_str = "manufactured";
-    type name;
+    TestCase name;
 };
 
 
@@ -39,12 +43,17 @@ struct GeneralParameters
     explicit GeneralParameters(ParameterHandler& prm) {
         prm.enter_subsection("General Settings");
         prm.add_parameter("Output Directory", output_dir);
+        prm.add_action("Output Directory", [&](string s){
+          output_dir = output_dir + (s.back() != '/' ? "/" : "" );
+        });
         prm.add_parameter("Dimension", dim);
         prm.leave_subsection();
+
+        mkdir(output_dir.c_str(), 0777);
     }
 
-    string output_dir = "";
-    int dim = 3;
+    string output_dir = "./output/";
+    int dim = 2;
 };
 
 struct MeshParameters
@@ -56,7 +65,7 @@ struct MeshParameters
         prm.leave_subsection();
     }
 
-    bool output_mesh = false;
+    bool output_mesh = true;
     int initial_refinements = 3;
 };
 
@@ -64,22 +73,30 @@ struct MeshParameters
 struct Settings
 {
     explicit Settings(const string& filename):
-        GeneralSettings(prm),
-        TestCaseSettings(prm),
-        MeshSettings(prm)
+            parameter_file(filename),
+            generalSettings(prm),
+            testcaseSettings(prm),
+            meshSettings(prm)
     {
         prm.parse_input(filename);
+
+        std::size_t pos = filename.find(".prm");
+        filename_base = filename.substr(0, pos);
     }
 
     Settings(const Settings& s):
-        prm(),
-        GeneralSettings(s.GeneralSettings),
-        TestCaseSettings(s.TestCaseSettings),
-        MeshSettings(s.MeshSettings)
-    {}
+            prm(),
+            parameter_file(s.parameter_file),
+            generalSettings(s.generalSettings),
+            testcaseSettings(s.testcaseSettings),
+            meshSettings(s.meshSettings)
+    {
+        std::size_t pos = parameter_file.find(".prm");
+        filename_base = parameter_file.substr(0, pos);
+    }
 
     int get_dim(){
-        return GeneralSettings.dim;
+        return generalSettings.dim;
     }
 
     void export_settings(const string& filename){
@@ -90,9 +107,11 @@ struct Settings
 private:
     ParameterHandler prm;
 public:
-    GeneralParameters GeneralSettings;
-    TestCaseParameters TestCaseSettings;
-    MeshParameters MeshSettings;
+    string parameter_file;
+    string filename_base;
+    GeneralParameters generalSettings;
+    TestCaseParameters testcaseSettings;
+    MeshParameters meshSettings;
 };
 
 

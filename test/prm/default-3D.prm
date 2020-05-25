@@ -1,14 +1,14 @@
 # Listing of Parameters
 # ---------------------
 subsection General Settings
-  set Dimension        = 3
-  set Output Directory = 
+  set Dimension        = 3 # default: 2
+  set Output Directory =   # default: ./output/
 end
 
 
 subsection Mesh Settings
   set Initial Refinements = 3
-  set Output Mesh         = false
+  set Output Mesh         = false # default: true
 end
 
 

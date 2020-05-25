@@ -1,11 +1,12 @@
 
 SET(TARGET_SRC_FILES
-		${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
-		Base/NSESolver.cpp Base/NSESolver.h)
+		main.cpp
+		Base/NSESolver.cpp
+		Geometry/manufactured.cpp
+		Geometry/round_cylinder.cpp Geometry/channel_flow.cpp)
 
 SET(TARGET_INC_DIRS 
     ${CMAKE_CURRENT_SOURCE_DIR}/.
-	${CMAKE_CURRENT_SOURCE_DIR}/Base
    )
 
 
