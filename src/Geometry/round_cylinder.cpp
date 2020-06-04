@@ -14,7 +14,6 @@ using namespace dealii;
 
 template<>
 void generate_triangulation<TestCase::round_cylinder>(Triangulation<2>& tria){
-    const Point<2> cylinder_center(0.2, 0.2);
     /* tria1 channel with square portion removed
      *
      * y=0.41 ->   ------------- ... ----
@@ -67,6 +66,7 @@ void generate_triangulation<TestCase::round_cylinder>(Triangulation<2>& tria){
     tria2.reset_all_manifolds();
 
     // Move square into place
+    const Point<2> cylinder_center(0.2, 0.2);
     GridTools::shift(cylinder_center, tria2);
 
     // MERGE
@@ -102,7 +102,7 @@ void insert_boundary_ids<TestCase::round_cylinder>(Triangulation<2>& tria){
 }
 
 template
-void generate_triangulation<TestCase::round_cylinder>(Triangulation<2>& tria);
+void generate_triangulation<TestCase::round_cylinder>(Triangulation<2>&);
 
 template
-void insert_boundary_ids<TestCase::round_cylinder>(Triangulation<2>& tria);
+void insert_boundary_ids<TestCase::round_cylinder>(Triangulation<2>&);

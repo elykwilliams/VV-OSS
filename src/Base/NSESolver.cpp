@@ -34,11 +34,12 @@ void NSESolver<dim>::setup_mesh(){
 
     triangulation.refine_global(meshSettings.initial_refinements);
 
-    if (meshSettings.output_mesh && rank == 0)
+    if (meshSettings.output_mesh)
     {
         GridOut out;
-        std::ofstream ofs(generalSettings.output_dir + filename_base + "-grid.vtu");
-        out.write_vtu(triangulation, ofs);
+        std::string filename = generalSettings.output_dir + filename_base + "-grid";
+        out.write_mesh_per_processor_as_vtu(triangulation, filename);
+        pcout << "wrote files" << std::endl;
     }
 }
 
