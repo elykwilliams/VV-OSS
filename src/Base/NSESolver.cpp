@@ -7,7 +7,8 @@
 template<int dim>
 NSESolver<dim>::NSESolver(const Settings& s):
     Settings(s),
-    triangulation(mpi_comm)
+    triangulation(mpi_comm),
+    fe_handler(feSettings)
 {
     setup_mesh();
 }

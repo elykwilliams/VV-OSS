@@ -69,14 +69,30 @@ struct MeshParameters
     int initial_refinements = 3;
 };
 
+struct FEParameters
+{
+    explicit FEParameters(ParameterHandler& prm){
+        prm.enter_subsection("FE Settings");
+        prm.add_parameter("Velocity Degree", vel_deg);
+        prm.add_parameter("Pressure Degree", pres_deg);
+        prm.add_parameter("Use vorticity", have_vort);
+        prm.leave_subsection();
+        is_lbb_stable = (vel_deg == pres_deg + 1);
+    }
 
+    unsigned int vel_deg = 2;
+    unsigned int pres_deg = 1;
+    bool have_vort = false;
+    bool is_lbb_stable = true;
+};
 struct Settings
 {
     explicit Settings(const string& filename):
             parameter_file(filename),
             generalSettings(prm),
             testcaseSettings(prm),
-            meshSettings(prm)
+            meshSettings(prm),
+            feSettings(prm)
     {
         prm.parse_input(filename);
 
@@ -89,7 +105,8 @@ struct Settings
             parameter_file(s.parameter_file),
             generalSettings(s.generalSettings),
             testcaseSettings(s.testcaseSettings),
-            meshSettings(s.meshSettings)
+            meshSettings(s.meshSettings),
+            feSettings(s.feSettings)
     {
         std::size_t pos = parameter_file.find(".prm");
         filename_base = parameter_file.substr(0, pos);
@@ -112,6 +129,7 @@ public:
     GeneralParameters generalSettings;
     TestCaseParameters testcaseSettings;
     MeshParameters meshSettings;
+    FEParameters feSettings;
 };
 
 

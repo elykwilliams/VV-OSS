@@ -6,6 +6,7 @@
 #define NSE_NSESOLVER_H
 
 #include "Base/settings.h"
+#include "Base/fe_handler.h"
 
 #include <deal.II/distributed/tria.h>
 
@@ -26,6 +27,8 @@ public:
 
 private:
     P4est::Triangulation<dim> triangulation;
+
+    NSEFeHandler<dim> fe_handler;
 
     void setup_mesh();
 };
