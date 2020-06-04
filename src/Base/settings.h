@@ -45,17 +45,17 @@ struct GeneralParameters
         prm.add_action("Output Directory", [&](string s){
           output_dir = output_dir + (s.back() != '/' ? "/" : "" );
         });
-        prm.add_parameter("Dimension", dim, "2 | 3",
+        prm.add_parameter("Dimension", dim_str, "2 | 3",
                           Patterns::Selection("2|3"));
-        prm.add_action("Test Case Type", [&](const string& s){
+        prm.add_action("Dimension", [&](const string& s){
             dim = 2 + (s == "2" ? 0 : 1);
         });
-        prm.add_parameter("Dimension", dim);
         prm.leave_subsection();
     }
 
     string output_dir = "./output/";
-    int dim = 2;
+    string dim_str = "2";
+    int dim;
 };
 
 struct MeshParameters

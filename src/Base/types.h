@@ -8,10 +8,19 @@
 #include <deal.II/base/tensor.h>
 #include <deal.II/fe/fe_values_extractors.h>
 
-enum class TestCase {round_cylinder, channel_flow, manufactured};
+enum class TestCase {
+    round_cylinder,
+    channel_flow,
+    manufactured
+};
 
 namespace BoundaryType {
-    enum : dealii::types::boundary_id {inflow, outflow, wall, bluff};
+    enum : dealii::types::boundary_id {
+        inflow,
+        outflow,
+        wall,
+        bluff
+    };
 }
 
 // Define Types for vorticity depending on dimension
@@ -44,8 +53,13 @@ struct NSETypes<3>
     typedef dealii::FEValuesExtractors::Vector VelocityExtractorType;
 };
 
-enum class VariableName {
-    Velocity, Pressure, Vorticity
-};
+namespace VariableName {
+    enum : int {
+        Velocity,
+        Pressure,
+        Vorticity
+    };
+}
+
 
 #endif //NSE_TYPES_H

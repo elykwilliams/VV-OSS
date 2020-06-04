@@ -50,7 +50,7 @@ public:
         return retvec;
     }
 
-    ComponentMask component_mask(const VariableName fe_name){
+    ComponentMask component_mask(const int fe_name){
         // Generate Componenet mask for given block number
 
         vector<bool> mask;
@@ -60,7 +60,7 @@ public:
         return ComponentMask(mask);
     };
 
-    auto extractor(VariableName fe_name){
+    auto extractor(int fe_name){
         return extractor_[fe_name];
     }
 
@@ -78,7 +78,7 @@ protected:
         ++n_blocks;
     }
 
-    void add_vector_fe(shared_ptr<FiniteElement<dim>> fe, VariableName fe_name)
+    void add_vector_fe(shared_ptr<FiniteElement<dim>> fe, int fe_name)
     {
         extractor_[fe_name] = FEValuesExtractors::Vector(n_components);
         block_name[fe_name] = n_blocks;
@@ -92,7 +92,7 @@ protected:
 
     }
 
-    map<VariableName, variant<FEValuesExtractors::Scalar, FEValuesExtractors::Vector>>
+    map<int, variant<FEValuesExtractors::Scalar, FEValuesExtractors::Vector>>
             extractor_;
 
     // Convert component number to block number
@@ -128,17 +128,17 @@ public:
         AssertThrow(velocity_degree > 0 && pressure_degree > 0, ExcNotInitialized());
 
         // Add Velocity
-        this->add_vector_fe(make_shared<FE_Q<dim>>(velocity_degree), NSEFeHandler<dim>::Velocity);
+        this->add_vector_fe(make_shared<FE_Q<dim>>(velocity_degree), VariableName::Velocity);
 
         // Add Pressure
-        this->add_scalar_fe(make_shared<FE_Q<dim>>(pressure_degree), NSEFeHandler<dim>::Pressure);
+        this->add_scalar_fe(make_shared<FE_Q<dim>>(pressure_degree), VariableName::Pressure);
 
         // Add Vorticity
         if (dim == 3 && have_vorticity)
-            this->add_vector_fe(make_shared<FE_Q<dim>>(velocity_degree), NSEFeHandler<dim>::Vorticity);
+            this->add_vector_fe(make_shared<FE_Q<dim>>(velocity_degree), VariableName::Vorticity);
 
         else if (dim == 2 && have_vorticity)
-            this->add_scalar_fe(make_shared<FE_Q<dim>>(velocity_degree), NSEFeHandler<dim>::Vorticity);
+            this->add_scalar_fe(make_shared<FE_Q<dim>>(velocity_degree), VariableName::Vorticity);
     }
 
     const bool is_stable;
