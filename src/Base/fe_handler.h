@@ -109,7 +109,7 @@ private:
 
 
 template <int dim>
-class NSEFeHandler : private FeHandlerBase<dim>, public NSETypes<dim>
+class NSEFeHandler : public FeHandlerBase<dim>, public NSETypes<dim>
 {
     // This class ia a FeHandlerBase for flow problems with or without
     // vorticity. The reason for this class is to manage the cases when

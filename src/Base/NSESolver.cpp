@@ -9,7 +9,8 @@ template<int dim>
 NSESolver<dim>::NSESolver(const Settings& s):
     Settings(s),
     triangulation(mpi_comm),
-    fe_handler(s.feSettings)
+    fe_handler(s.feSettings),
+    fe(fe_handler.fes(), fe_handler.multiplicities())
 {
     struct stat sb{};
     if (stat(generalSettings.output_dir.c_str(), &sb) != 0)

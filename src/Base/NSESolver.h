@@ -9,6 +9,7 @@
 #include "Base/fe_handler.h"
 
 #include <deal.II/distributed/tria.h>
+#include <deal.II/fe/fe_system.h>
 
 
 //using Trilinos =  LinearAlgebraTrilinos::MPI;
@@ -30,6 +31,7 @@ private:
     P4est::Triangulation<dim> triangulation;
 
     NSEFeHandler<dim> fe_handler;
+    FESystem<dim> fe;
 
     void setup_mesh();
 };
