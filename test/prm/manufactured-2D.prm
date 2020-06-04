@@ -1,5 +1,12 @@
 # Listing of Parameters
 # ---------------------
+subsection FE Settings
+  set Pressure Degree = 1
+  set Use vorticity   = false
+  set Velocity Degree = 2
+end
+
+
 subsection General Settings
   set Dimension        = 2
   set Output Directory = ./output/
