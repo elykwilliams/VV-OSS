@@ -50,7 +50,7 @@ public:
         return retvec;
     }
 
-    ComponentMask component_mask(const int fe_name){
+    ComponentMask component_mask(const VariableName fe_name){
         // Generate Componenet mask for given block number
 
         vector<bool> mask;
@@ -60,11 +60,15 @@ public:
         return ComponentMask(mask);
     };
 
+    auto extractor(VariableName fe_name){
+        return extractor_[fe_name];
+    }
+
 protected:
     void add_scalar_fe(shared_ptr<FiniteElement<dim>> fe, int fe_name){
         // Adds extractor before  n_components increments
 
-        extractor[fe_name] = FEValuesExtractors::Scalar(n_components);
+        extractor_[fe_name] = FEValuesExtractors::Scalar(n_components);
         block_name[fe_name] = n_blocks;
 
         fe_vec.push_back(fe);
@@ -74,9 +78,9 @@ protected:
         ++n_blocks;
     }
 
-    void add_vector_fe(shared_ptr<FiniteElement<dim>> fe, int fe_name)
+    void add_vector_fe(shared_ptr<FiniteElement<dim>> fe, VariableName fe_name)
     {
-        extractor[fe_name] = FEValuesExtractors::Vector(n_components);
+        extractor_[fe_name] = FEValuesExtractors::Vector(n_components);
         block_name[fe_name] = n_blocks;
 
         fe_vec.push_back(fe);
@@ -88,8 +92,8 @@ protected:
 
     }
 
-    map<int, variant<FEValuesExtractors::Scalar, FEValuesExtractors::Vector>>
-            extractor;
+    map<VariableName, variant<FEValuesExtractors::Scalar, FEValuesExtractors::Vector>>
+            extractor_;
 
     // Convert component number to block number
     vector<unsigned int> components_to_blocks;
@@ -118,7 +122,8 @@ public:
     explicit NSEFeHandler(const FEParameters& s)
         : NSEFeHandler(s.vel_deg, s.pres_deg, s.have_vort){}
 
-    NSEFeHandler(int velocity_degree, int pressure_degree, bool have_vorticity)
+    NSEFeHandler(int velocity_degree, int pressure_degree, bool have_vorticity) :
+        is_stable(velocity_degree == pressure_degree + 1)
     {
         AssertThrow(velocity_degree > 0 && pressure_degree > 0, ExcNotInitialized());
 
@@ -135,6 +140,9 @@ public:
         else if (dim == 2 && have_vorticity)
             this->add_scalar_fe(make_shared<FE_Q<dim>>(velocity_degree), NSEFeHandler<dim>::Vorticity);
     }
+
+    const bool is_stable;
+
 };
 
 

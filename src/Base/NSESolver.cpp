@@ -3,13 +3,18 @@
 //
 
 #include "NSESolver.h"
+#include <sys/stat.h>
 
 template<int dim>
 NSESolver<dim>::NSESolver(const Settings& s):
     Settings(s),
     triangulation(mpi_comm),
-    fe_handler(feSettings)
+    fe_handler(s.feSettings)
 {
+    struct stat sb{};
+    if (stat(generalSettings.output_dir.c_str(), &sb) != 0)
+        mkdir(generalSettings.output_dir.c_str(), 0777);
+
     setup_mesh();
 }
 

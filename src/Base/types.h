@@ -29,10 +29,6 @@ struct NSETypes<2>
     typedef dealii::FEValuesExtractors::Scalar VorticityExtractorType;
     typedef dealii::FEValuesExtractors::Scalar PressureExtractorType;
     typedef dealii::FEValuesExtractors::Vector VelocityExtractorType;
-
-    enum VariableName {
-        Velocity, Pressure, Vorticity
-    };
 };
 
 
@@ -46,10 +42,10 @@ struct NSETypes<3>
     typedef dealii::FEValuesExtractors::Vector VorticityExtractorType;
     typedef dealii::FEValuesExtractors::Scalar PressureExtractorType;
     typedef dealii::FEValuesExtractors::Vector VelocityExtractorType;
+};
 
-    enum VariableName {
-        Velocity, Pressure, Vorticity
-    };
+enum class VariableName {
+    Velocity, Pressure, Vorticity
 };
 
 #endif //NSE_TYPES_H

@@ -12,7 +12,6 @@
 
 #include <string>
 #include <fstream>
-#include <sys/stat.h>
 
 using std::ofstream, std::string;
 
@@ -46,10 +45,13 @@ struct GeneralParameters
         prm.add_action("Output Directory", [&](string s){
           output_dir = output_dir + (s.back() != '/' ? "/" : "" );
         });
+        prm.add_parameter("Dimension", dim, "2 | 3",
+                          Patterns::Selection("2|3"));
+        prm.add_action("Test Case Type", [&](const string& s){
+            dim = 2 + (s == "2" ? 0 : 1);
+        });
         prm.add_parameter("Dimension", dim);
         prm.leave_subsection();
-
-        mkdir(output_dir.c_str(), 0777);
     }
 
     string output_dir = "./output/";
@@ -77,14 +79,13 @@ struct FEParameters
         prm.add_parameter("Pressure Degree", pres_deg);
         prm.add_parameter("Use vorticity", have_vort);
         prm.leave_subsection();
-        is_lbb_stable = (vel_deg == pres_deg + 1);
     }
 
     unsigned int vel_deg = 2;
     unsigned int pres_deg = 1;
     bool have_vort = false;
-    bool is_lbb_stable = true;
 };
+
 struct Settings
 {
     explicit Settings(const string& filename):

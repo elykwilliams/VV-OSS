@@ -1,5 +1,4 @@
 FILE(GLOB PRM_FILES ${CMAKE_SOURCE_DIR}/test/prm/*.prm)
-MESSAGE(${PRM_FILES})
 
 SET(TARGET update_prm_files)
 ADD_EXECUTABLE(${TARGET} update_prm.cpp)
