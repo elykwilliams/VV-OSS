@@ -32,7 +32,7 @@ class FeHandlerBase
 public:
     FeHandlerBase() : n_components(0), n_blocks(0){}
 
-    unsigned int size(){ return n_components;}
+    unsigned int size() const{ return n_components;}
 
     vector<unsigned int> multiplicities() const{
         AssertThrow(mult_vec.size() > 0, ExcNotInitialized());
@@ -117,8 +117,6 @@ class NSEFeHandler : public FeHandlerBase<dim>, public NSETypes<dim>
     // Provides a simple interface to add more unknown fields.
 public:
 
-    NSEFeHandler(const NSEFeHandler<dim> &feh) = default;
-
     explicit NSEFeHandler(const FEParameters& s)
         : NSEFeHandler(s.vel_deg, s.pres_deg, s.have_vort){}
 
@@ -141,7 +139,7 @@ public:
             this->add_scalar_fe(make_shared<FE_Q<dim>>(velocity_degree), VariableName::Vorticity);
     }
 
-    const bool is_stable;
+    const bool is_stable{};
 
 };
 

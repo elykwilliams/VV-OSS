@@ -10,7 +10,10 @@ NSESolver<dim>::NSESolver(const Settings& s):
     Settings(s),
     triangulation(mpi_comm),
     fe_handler(s.feSettings),
-    fe(fe_handler.fes(), fe_handler.multiplicities())
+    fe(fe_handler.fes(), fe_handler.multiplicities()),
+    forcing_function(s.testcaseSettings, fe_handler),
+    boundary_conditions(s.testcaseSettings, fe_handler),
+    exact_solution(s.testcaseSettings, fe_handler)
 {
     struct stat sb{};
     if (stat(generalSettings.output_dir.c_str(), &sb) != 0)
@@ -46,9 +49,16 @@ void NSESolver<dim>::setup_mesh(){
         GridOut out;
         std::string filename = generalSettings.output_dir + filename_base + "-grid";
         out.write_mesh_per_processor_as_vtu(triangulation, filename);
-        pcout << "wrote files" << std::endl;
+        pcout << "mesh was saved" << std::endl;
     }
 }
 
+template<int dim>
+void NSESolver<dim>::setup_system(){
+
+
+
+}
+
+
 template class NSESolver<2>;
-template class NSESolver<3>;

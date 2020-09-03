@@ -29,11 +29,13 @@ struct TestCaseParameters
            else if (s == "channel_flow") name = TestCase::channel_flow;
            else if (s == "manufactured") name = TestCase::manufactured;
         });
+        prm.add_parameter("Kinematic Viscosity", nu);
         prm.leave_subsection();
     }
 
     string name_str = "manufactured";
     TestCase name;
+    double nu = 0.001;
 };
 
 

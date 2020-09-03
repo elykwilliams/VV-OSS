@@ -15,7 +15,7 @@ void insert_boundary_ids<TestCase::manufactured>(Triangulation<2>& tria){
     for (const auto& cell : tria.active_cell_iterators()) {
         for (unsigned int f = 0; f < GeometryInfo<2>::faces_per_cell; ++f)
             if (cell->at_boundary(f)) {
-                cell->face(f)->set_boundary_id(BoundaryType::inflow);
+                cell->face(f)->set_boundary_id(BoundaryType::dirichlet);
             }
 
     }

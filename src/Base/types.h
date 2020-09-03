@@ -19,7 +19,8 @@ namespace BoundaryType {
         inflow,
         outflow,
         wall,
-        bluff
+        bluff,
+        dirichlet
     };
 }
 

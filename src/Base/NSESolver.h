@@ -7,6 +7,7 @@
 
 #include "Base/settings.h"
 #include "Base/fe_handler.h"
+#include "Functions/function_constructors.h"
 
 #include <deal.II/distributed/tria.h>
 #include <deal.II/fe/fe_system.h>
@@ -33,7 +34,12 @@ private:
     NSEFeHandler<dim> fe_handler;
     FESystem<dim> fe;
 
+    ForcingFunction<dim> forcing_function;
+    BoundaryConditions<dim> boundary_conditions;
+    AnalyticSolution<dim> exact_solution;
+
     void setup_mesh();
+    void setup_system();
 };
 
 
