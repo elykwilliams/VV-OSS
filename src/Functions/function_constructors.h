@@ -80,8 +80,8 @@ public:
     BoundaryConditions(const TestCaseParameters& s, const FeHandlerBase<dim>& feh){
         switch(s.name){
             case TestCase::manufactured:
-                velocity_dirichlet[BoundaryType::dirichlet] = std::make_shared<ManufacturedSolution<2>>(s, feh);
-                vorticity_dirichlet[BoundaryType::dirichlet] = std::make_shared<ManufacturedSolution<2>>(s, feh);
+                velocity_dirichlet[BoundaryType::dirichlet] = new ManufacturedSolution<2>(s, feh);
+                vorticity_dirichlet[BoundaryType::dirichlet] = new ManufacturedSolution<2>(s, feh);
                 break;
             case TestCase::channel_flow:
 
@@ -93,6 +93,16 @@ public:
 
     };
 
+    ~BoundaryConditions(){
+        for(auto elem : velocity_dirichlet){
+            delete elem.second;
+        }
+
+        for(auto elem : vorticity_dirichlet){
+            delete elem.second;
+        }
+    }
+
     auto velocity(){
         return velocity_dirichlet;
     }
@@ -100,9 +110,11 @@ public:
         return velocity_dirichlet;
     }
 
+    void update_vorticity(){ ;}
+
 private:
-    std::map<types::boundary_id, std::shared_ptr<dealii::Function<dim>> > velocity_dirichlet;
-    std::map<types::boundary_id, std::shared_ptr<dealii::Function<dim> > > vorticity_dirichlet;
+    std::map<types::boundary_id, const dealii::Function<dim>*> velocity_dirichlet;
+    std::map<types::boundary_id, const dealii::Function<dim>*> vorticity_dirichlet;
 };
 
 

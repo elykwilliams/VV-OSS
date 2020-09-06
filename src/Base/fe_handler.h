@@ -30,11 +30,11 @@ class FeHandlerBase
     // componentmasks.
 
 public:
-    FeHandlerBase() : n_components(0), n_blocks(0){}
+    FeHandlerBase() : n_blocks(0), n_components(0){}
 
-    unsigned int size() const{ return n_components;}
+    [[nodiscard]] unsigned int size() const{ return n_components;}
 
-    vector<unsigned int> multiplicities() const{
+    [[nodiscard]] vector<unsigned int> multiplicities() const{
         AssertThrow(mult_vec.size() > 0, ExcNotInitialized());
 
         return mult_vec;
@@ -63,6 +63,11 @@ public:
     auto extractor(int fe_name){
         return extractor_[fe_name];
     }
+
+    unsigned int n_blocks;
+
+    // Convert component number to block number
+    vector<unsigned int> components_to_blocks;
 
 protected:
     void add_scalar_fe(shared_ptr<FiniteElement<dim>> fe, int fe_name){
@@ -95,15 +100,13 @@ protected:
     map<int, variant<FEValuesExtractors::Scalar, FEValuesExtractors::Vector>>
             extractor_;
 
-    // Convert component number to block number
-    vector<unsigned int> components_to_blocks;
+
 
 private:
     vector<shared_ptr<FiniteElement<dim>>> fe_vec{};    // Array of Finite Elements
     vector<unsigned int> mult_vec{};                    // Dimensions of Finite Elements
     map<int, int> block_name;
     unsigned int n_components;
-    unsigned int n_blocks;
 
 };
 
